@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: kotlin-api
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/docker
+    password: docker
+    username: docker
+  jackson:
+    serialization:
+      indent_output: true
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  cloud:
+    consul:
+      discovery:
+        instanceId: ${spring.application.name}:${random.value}
+        prefer-ip-address: true    # Disable using hostname for registration
+        lifecycle.enabled: true
+      host: localhost
+      port: 8500
+server:
+  port: 8082

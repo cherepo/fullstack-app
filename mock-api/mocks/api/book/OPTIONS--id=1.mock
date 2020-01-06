@@ -1,0 +1,5 @@
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Allow: GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Headers: Content-Type, Authorization, xAccessToken, X-Correlation-Id, X-Session-Id

@@ -15,6 +15,18 @@ This project is mean to be a container which contains a series of reference proj
 
 ## Frontend Angular
 
+## Java API
+
+Java API is demostrating a simple SpringBoot service that using JPA to access CUSTOMER and ORDER table with a one-to-many relationship
+
+## Kotlin API
+
+Kotlin API is demostrating a simple SpringBoot Kotlin service that using JPA to access CUSTOMER and ADDRESS table with a one-to-one relationship
+
+## Mock API
+
+Mock API provid a third API
+
 ## Keycloak
 
 Some simple setup example are
@@ -66,3 +78,4 @@ Once the access token has expired, we can refresh it by sending a POST request t
 # Document References
 
 - [BFF, Consul, and Microservices](https://medium.com/tech-tajawal/backend-for-frontend-using-graphql-under-microservices-5b63bbfcd7d9)
+- [JPA one to one relationship](https://www.baeldung.com/jpa-one-to-one)

@@ -1,0 +1,32 @@
+version: '3'
+
+volumes:
+  postgres_data:
+    driver: local
+  consul_data:
+    driver: local
+
+services:
+  consul:
+    container_name: consul-server
+    image: bitnami/consul:1
+    volumes:
+      - consul_data:/bitnami/consul
+    ports:
+      - '8300:8300'
+      - '8301:8301'
+      - '8301:8301/udp'
+      - '8500:8500'
+      - '8600:8600'
+      - '8600:8600/udp'
+  postgres:
+    container_name: che-postgres
+    image: postgres:11
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=docker

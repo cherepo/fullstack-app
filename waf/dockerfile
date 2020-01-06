@@ -1,0 +1,17 @@
+FROM nginx:1.11.10-alpine
+
+MAINTAINER Cheng Zou & Kyle Zeeuwen
+
+RUN apk add --update \
+    "vim<8" \
+    "jq<2" \
+    "curl<8" \
+    "bash<5" \
+  && rm -rf /var/cache/apk/*
+RUN mkdir -p /var/share/log
+
+ADD ./nginx/* /etc/nginx/
+COPY ./angular /usr/share/nginx/html
+ENV TEMPLATE=nginx.template
+
+CMD ["/bin/bash", "-c", "envsubst '$$HOSTNAME' < /etc/nginx/$TEMPLATE > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"]

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository
  *   - JpaRepository provides some JPA-related methods such as flushing the persistence context and deleting records in a batch.
  */
 @Repository
-interface CustomerRepository: JpaRepository<CustomerEntity, Long> {
+interface CustomerRepository: JpaRepository<CustomerEntity, Int> {
     fun findByLastName(lastName: String): List<CustomerEntity>
     fun findByFirstName(FirstName: String): List<CustomerEntity>
     override fun findAll(): List<CustomerEntity>

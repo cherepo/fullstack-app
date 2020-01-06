@@ -1,0 +1,98 @@
+worker_processes 4;
+
+events { worker_connections 1024; }
+
+http {
+
+  server_tokens off;
+
+  proxy_connect_timeout       300;
+  proxy_send_timeout          300;
+  proxy_read_timeout          300;
+  send_timeout                300;
+
+  log_format  access  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" $request_time $upstream_response_time';
+
+  server {
+    listen 80;
+    server_name *.mzou.cc;
+    server_name localhost;
+
+    error_log /var/share/log/nginx-error-${HOSTNAME}.log error;
+    access_log /var/share/log/nginx-access-${HOSTNAME}.log access;
+
+    proxy_buffering off;
+    proxy_http_version 1.1;
+
+    real_ip_header X-Forwarded-For;
+    set_real_ip_from 10.250.0.0/16;
+
+    #gzip configured as per HTML5 Boiler Plate
+    gzip on;
+    gzip_comp_level 5;
+    gzip_min_length 256;
+    gzip_proxied any;
+    gzip_vary on;
+    gzip_types text/plain text/xml text/css image/svg+xml application/javascript application/atom+xml application/pdf application/rss+xml application/json;
+
+    #if ($http_x_forwarded_proto != 'https') {
+    #  rewrite ^ https://$host$request_uri;
+    #}
+
+    location /index.html {
+      expires -1;
+      include mime.types;
+      root /usr/share/nginx/html;
+    }
+
+    location / {
+      expires -1; #this is set to max in the aws.template
+      include mime.types;
+      root /usr/share/nginx/html;
+    }
+
+    location /angular {
+      expires -1; #this is set to max in the aws.template
+      include mime.types;
+      root /usr/share/nginx/html/angular;
+    }
+  }
+
+  server {
+    listen 80 default_server;
+
+    error_log /var/share/log/nginx-error-${HOSTNAME}.log error;
+    access_log /var/share/log/nginx-access-${HOSTNAME}.log access;
+
+    proxy_buffering off;
+    proxy_http_version 1.1;
+
+    #gzip configured as per HTML5 Boiler Plate
+    gzip on;
+    gzip_comp_level 5;
+    gzip_min_length 256;
+    gzip_proxied any;
+    gzip_vary on;
+    gzip_types text/plain text/xml text/css image/svg+xml application/javascript application/atom+xml application/pdf application/rss+xml application/json;
+
+    location /index.html {
+      expires -1;
+      include mime.types;
+      root /usr/share/nginx/html;
+    }
+
+    location / {
+      expires -1; #this is set to max in the aws.template
+      include mime.types;
+      root /usr/share/nginx/html;
+    }
+
+    location /angular {
+      expires -1; #this is set to max in the aws.template
+      include mime.types;
+      root /usr/share/nginx/html/angular;
+    }
+  }
+}

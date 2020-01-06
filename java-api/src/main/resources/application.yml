@@ -1,0 +1,36 @@
+version: 0.1.0
+
+application:
+  name: contact-service
+  package: cc.mzou.api.javaapi
+  version: ${version}
+  title: Solar Project Java Service
+
+spring:
+  application:
+    name: ${application.name}-v${version}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+      hibernate:
+        ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/docker
+    username: docker
+    password: docker
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+
+server:
+  port: 8081

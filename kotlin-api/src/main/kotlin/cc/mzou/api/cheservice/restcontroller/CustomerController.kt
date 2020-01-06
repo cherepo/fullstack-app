@@ -81,7 +81,7 @@ class CustomerController @Autowired constructor(
     }
 
     @RequestMapping("/findbyid")
-    fun findById(@RequestParam("id") id: Long): CustomerDto {
+    fun findById(@RequestParam("id") id: Int): CustomerDto {
         val entity: CustomerEntity = repository.findById(id).get() ?: throw IllegalArgumentException("No customer with id ${id}")
         return createDTO(entity)
     }
@@ -93,7 +93,7 @@ class CustomerController @Autowired constructor(
 
     @RequestMapping(value = "/save", method = [RequestMethod.POST])
     fun persistUser(@RequestBody user: CreateUserDTO): ResponseEntity<String> {
-        val entity = CustomerEntity(id = UUID.randomUUID(), firstName = user.firstName, lastName = user.lastName, dob = user.dob)
+        val entity = CustomerEntity(id = Random().nextInt(Int.MAX_VALUE), firstName = user.firstName, lastName = user.lastName, dob = user.dob, address = null)
 
         // A use of let !!
         // val entity = user.dob?.let { UserEntity(firstName = user.firstName, lastName = user.lastName, dob = it) }

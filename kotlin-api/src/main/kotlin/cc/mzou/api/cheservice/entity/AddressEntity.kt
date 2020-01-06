@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "address")
-class AddressEntity (
+data class AddressEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long = -1,
@@ -22,5 +22,23 @@ class AddressEntity (
     val suburb: String,
 
     @Column
-    val postcode: Int
-    )
+    val city: String,
+
+    @Column
+    val country: String,
+
+    @Column
+    val postcode: Int,
+
+    /*
+    we won't use the @JoinColumn annotation there. This is because we only need it on the
+    owning side of the foreign key relationship. Simply put, whoever owns the foreign key
+    column gets the @JoinColumn annotation.
+     */
+    @OneToOne(mappedBy = "address")
+    val customer: CustomerEntity
+    ) {
+  override fun toString(): String{
+    return "Address [id=${id}]"
+  }
+}

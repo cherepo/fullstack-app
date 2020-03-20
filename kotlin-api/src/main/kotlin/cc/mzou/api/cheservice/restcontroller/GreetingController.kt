@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.atomic.AtomicLong
 
 @RestController
-class DemoDataApi {
+class GreetingController {
     val counter = AtomicLong()
 
     @GetMapping("/greeting")

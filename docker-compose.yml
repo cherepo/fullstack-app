@@ -8,7 +8,7 @@ volumes:
 
 services:
   consul:
-    container_name: consul-server
+    container_name: consul
     image: bitnami/consul:1
     volumes:
       - consul_data:/bitnami/consul
@@ -19,15 +19,16 @@ services:
       - '8500:8500'
       - '8600:8600'
       - '8600:8600/udp'
-  webapp:
-    container_name: webapp
-    build: ./waf
+  web:
+    image: che-web
+    container_name: web
+    build: ./angular
     ports:
       - "80:80"
       - "443:443"
-  postgres:
-    container_name: che-postgres
-    image: postgres:11
+  postgres-data:
+    container_name: postgres-data
+    image: postgres:alpine
     ports:
       - "5432:5432"
     volumes:
@@ -36,33 +37,33 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=docker
-  postgres-keycloak:
-    container_name: keycloak-postgres
-    image: postgres:11
+  postgres-kc:
+    container_name: postgres-kc
+    image: postgres:alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=password
   keycloak:
     container_name: keycloak
     image: jboss/keycloak
     environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: postgres-keycloak
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_SCHEMA: public
-      DB_PASSWORD: password
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: Pa55w0rd
+      - DB_VENDOR=POSTGRES
+      - DB_ADDR=postgres-keycloak
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_SCHEMA=public
+      - DB_PASSWORD=password
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=Pa55w0rd
       # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
       #JDBC_PARAMS: "ssl=true"
     ports:
       - 8180:8080
     depends_on:
-      - postgres-keycloak
+      - postgres-kc
     command: -b 0.0.0.0 -Djboss.http.port=8080 -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/tmp/keycloak/test -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
     volumes:
       - ./keycloak:/tmp/keycloak/test/

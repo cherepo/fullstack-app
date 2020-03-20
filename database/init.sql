@@ -6,7 +6,7 @@
 --        TABLESPACE = pg_default
 --        CONNECTION LIMIT = -1;
 
-GRANT ALL PRIVILEGES ON DATABASE docker TO docker;
+-- GRANT ALL PRIVILEGES ON DATABASE docker TO docker;
 
 CREATE TABLE ADDRESS
 (
@@ -56,7 +56,7 @@ ID    INTEGER primary key
 ,lastname  varchar(100)
 ,dob  date
 ,email  varchar(500)
-,address_id
+,address_id INTEGER REFERENCES ADDRESS(ID)
 );
 create index ID_IDX on CUSTOMER using btree(ID asc);
 
